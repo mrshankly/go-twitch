@@ -8,49 +8,35 @@ import (
 	"net/url"
 )
 
-// used with "GET /streams/:channel/"
-// https://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md#get-streamschannel
+// used with GET /streams/:channel/
 type SChannelS struct {
 	Stream *StreamS `json:"stream,omitempty"`
 	Links  *LinksS  `json:"_links,omitempty"`
 }
 
-// used with "GET /streams"
-// https://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md#get-streams
+// used with GET /streams
 type StreamsS struct {
-	Streams *[]StreamS `json:"streams,omitempty"`
+	Streams []*StreamS `json:"streams,omitempty"`
 	Links   *LinksS    `json:"_links,omitempty"`
 }
 
-// used with "GET /streams/featured"
-// https://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md#get-streamsfeatured
+// used with GET /streams/featured
 type FeaturedS struct {
-	Featured *[]FStreamS `json:"featured,omitempty"`
+	Featured []*FStreamS `json:"featured,omitempty"`
 	Links    *LinksS     `json:"_links,omitempty"`
 }
 
-// used with "GET /streams/summary"
-// https://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md#get-streamssummary
+// used with GET /streams/summary
 type SummaryS struct {
 	Viewers  int `json:"viewers,omitempty"`
 	Channels int `json:"channels,omitempty"`
-}
-
-type StreamsOptions struct {
-	Game       string
-	Channel    string
-	Limit      int
-	Offset     int
-	Embeddable bool
-	Hls        bool
-	ClientId   string
 }
 
 type StreamsMethod struct {
 	client *Client
 }
 
-// Returns a channel.
+// Returns a stream object if online.
 func (s *StreamsMethod) Channel(name string) (*SChannelS, error) {
 	rel := "streams/" + name
 
@@ -59,8 +45,8 @@ func (s *StreamsMethod) Channel(name string) (*SChannelS, error) {
 	return stream, err
 }
 
-// Returns a list of streams according to optional parameters.
-func (s *StreamsMethod) List(opt *StreamsOptions) (*StreamsS, error) {
+// Returns a list of stream objects according to optional parameters.
+func (s *StreamsMethod) List(opt *ListOptions) (*StreamsS, error) {
 	rel := "streams"
 	if opt != nil {
 		p := url.Values{
@@ -80,8 +66,8 @@ func (s *StreamsMethod) List(opt *StreamsOptions) (*StreamsS, error) {
 	return streams, err
 }
 
-// Returns a list of featured (promoted) streams.
-func (s *StreamsMethod) Featured(opt *StreamsOptions) (*FeaturedS, error) {
+// Returns a list of featured (promoted) stream objects.
+func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 	rel := "streams/featured"
 	if opt != nil {
 		p := url.Values{
@@ -98,14 +84,10 @@ func (s *StreamsMethod) Featured(opt *StreamsOptions) (*FeaturedS, error) {
 }
 
 // Returns a summary of current streams.
-func (s *StreamsMethod) Summary(opt *StreamsOptions) (*SummaryS, error) {
+func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 	rel := "streams/summary"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
-			"hls":    []string{strconv.FormatBool(opt.Hls)},
-		}
+		p := url.Values{"game":  []string{strconv.Itoa(opt.Game)}}
 		rel += "?" + p.Encode()
 	}
 
@@ -113,3 +95,5 @@ func (s *StreamsMethod) Summary(opt *StreamsOptions) (*SummaryS, error) {
 	_, err := s.client.Get(rel, summary)
 	return summary, err
 }
+
+// TODO GET /streams/followed
