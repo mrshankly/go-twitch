@@ -14,6 +14,10 @@ type ChannelS struct {
 	Mature      bool           `json:"mature,omitempty"`
 	Url         string         `json:"url,omitempty"`
 	DisplayName string         `json:"display_name,omitempty"`
+	// authenticated
+	StreamKey   string         `json:"stream_key,omitempty"`
+	Login       string         `json:"login,omitempty"`
+	Email       string         `json:"email,omitempty"`
 }
 
 type TeamS struct {
