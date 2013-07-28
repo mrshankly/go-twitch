@@ -13,7 +13,13 @@ type Client struct {
 	BaseURL *url.URL
 
 	// Twitch api methods
-	Streams *StreamsMethod
+	Channels *Method
+	Chat     *Method
+	Streams  *Method
+}
+
+type Method struct {
+	client *Client
 }
 
 // Returns a new twitch client used to communicate with the API.
@@ -21,7 +27,11 @@ func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(rootURL)
 
 	c := &Client{client: httpClient, BaseURL: baseURL}
-	c.Streams = &StreamsMethod{client: c}
+
+	m := &Method{client: c}
+	c.Channels = m
+	c.Chat     = m
+	c.Streams  = m
 
 	return c
 }

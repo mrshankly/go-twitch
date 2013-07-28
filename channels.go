@@ -1,5 +1,5 @@
 // Channels methods of the twitch api.
-// https://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md
+// https://github.com/justintv/Twitch-API/blob/master/v3_resources/channels.md
 
 package twitch
 
@@ -24,13 +24,9 @@ type follow struct {
 	User *UserS `json:"user,omitempty"`
 }
 
-type ChannelsMethod struct {
-	client *Client
-}
-
 // Returns a channel object. If `name` is an empty string, returns the channel
 // object of authenticated user.
-func (c *ChannelsMethod) Channel(name string) (*ChannelS, error) {
+func (c *Method) Channel(name string) (*ChannelS, error) {
 	rel := "channel" // get authenticated channel
 	if name != "" {
 		rel = "channels/" + name
@@ -43,7 +39,7 @@ func (c *ChannelsMethod) Channel(name string) (*ChannelS, error) {
 
 // Returns a list of videos ordered by time of creation, starting with the most
 // recent from channel `name`.
-func (c *ChannelsMethod) Videos(name string, opt *ListOptions) (*VideosS, error) {
+func (c *Method) Videos(name string, opt *ListOptions) (*VideosS, error) {
 	rel := "channels/" + name + "/videos"
 	if opt != nil {
 		p := url.Values{
@@ -59,7 +55,7 @@ func (c *ChannelsMethod) Videos(name string, opt *ListOptions) (*VideosS, error)
 }
 
 // Returns a list of users the channel `name` is following.
-func (c *ChannelsMethod) Follows(name string, opt *ListOptions) (*FollowsS, error) {
+func (c *Method) Follows(name string, opt *ListOptions) (*FollowsS, error) {
 	rel := "channels/" + name + "/follows"
 	if opt != nil {
 		p := url.Values{
