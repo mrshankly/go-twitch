@@ -14,6 +14,16 @@ type VideosS struct {
 	Links  *LinksS   `json:"_links,omitempty"`
 }
 
+// used with GET /channels/:channel/follows
+type FollowsS struct {
+	Follows []*follow `json:"follows,omitempty"`
+	Links   *LinksS   `json:"_links,omitempty"`
+}
+
+type follow struct {
+	User *UserS `json:"user,omitempty"`
+}
+
 type ChannelsMethod struct {
 	client *Client
 }
@@ -46,6 +56,23 @@ func (c *ChannelsMethod) Videos(name string, opt *ListOptions) (*VideosS, error)
 	videos := new(VideosS)
 	_, err := c.client.Get(rel, videos)
 	return videos, err
+}
+
+// Returns a list of users the channel `name` is following.
+func (c *ChannelsMethod) Follows(name string, opt *ListOptions) (*FollowsS, error) {
+	rel := "channels/" + name + "/follows"
+	if opt != nil {
+		p := url.Values{
+			"limit":     []string{strconv.Itoa(opt.Limit)},
+			"offset":    []string{strconv.Itoa(opt.Offset)},
+			"direction": []string{opt.Direction},
+		}
+		rel += "?" + p.Encode()
+	}
+
+	follow := new(FollowsS)
+	_, err := c.client.Get(rel, follow)
+	return follow, err
 }
 
 // TODO PUT /channels/:channel/

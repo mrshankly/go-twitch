@@ -1,5 +1,6 @@
 package twitch
 
+// Channel object
 type ChannelS struct {
 	Name        string         `json:"name,omitempty"`
 	Game        string         `json:"game,omitempty"`
@@ -20,6 +21,7 @@ type ChannelS struct {
 	Email       string         `json:"email,omitempty"`
 }
 
+// Team object
 type TeamS struct {
 	Name        string `json:"name,omitempty"`
 	Background  string `json:"background,omitempty"`
@@ -29,12 +31,7 @@ type TeamS struct {
 	DisplayName string `json:"display_name,omitempty"`
 }
 
-type ChannelLinksS struct {
-    Chat       string `json:"chat,omitempty"`
-    Commercial string `json:"commercial,omitempty"`
-    Videos     string `json:"videos,omitempty"`
-}
-
+// Stream oject
 type StreamS struct {
 	Game        string    `json:"game,omitempty"`
 	Name        string    `json:"name,omitempty"`
@@ -46,12 +43,15 @@ type StreamS struct {
 	Status      string    `json:"status,omitempty"`
 }
 
-type FStreamS struct {
-	Stream *StreamS `json:"stream,omitempty"`
-	Text   string   `json:"text,omitempty"`
-	Image  string   `json:"image,omitempty"`
+// User object
+type UserS struct {
+	Name        string `json:"name,omitempty"`
+	Logo        string `json:"logo,omitempty"`
+	ID          string `json:"_id,omitempty"`
+	DisplayName string `json:"display_name,omitempty"`
 }
 
+// Video object
 type VideoS struct {
 	Title       string `json:"title,omitempty"`
 	ID          string `json:"_id,omitempty"`
@@ -63,11 +63,23 @@ type VideoS struct {
 	Description string `json:"description,omitempty"`
 }
 
+type FStreamS struct {
+	Stream *StreamS `json:"stream,omitempty"`
+	Text   string   `json:"text,omitempty"`
+	Image  string   `json:"image,omitempty"`
+}
+
 type LinksS struct {
 	Summary  string `json:"summary,omitempty"`
 	Followed string `json:"followed,omitempty"`
 	Next     string `json:"streams,omitempty"`
 	Featured string `json:"featured,omitempty"`
+}
+
+type ChannelLinksS struct {
+    Chat       string `json:"chat,omitempty"`
+    Commercial string `json:"commercial,omitempty"`
+    Videos     string `json:"videos,omitempty"`
 }
 
 type PreviewS struct {
@@ -85,4 +97,5 @@ type ListOptions struct {
 	Embeddable bool
 	Hls        bool
 	ClientId   string
+	Direction  string
 }
