@@ -13,7 +13,7 @@ type EmoticonsS struct {
 }
 
 type EmoticonS struct {
-	Regex string `json:"regex,omitempty"`
+	Regex string     `json:"regex,omitempty"`
 	Images []*ImageS `json:"images,omitempty"`
 }
 
