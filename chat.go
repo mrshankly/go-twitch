@@ -8,11 +8,11 @@ type ChatLinks struct {
 	Badges    string `json:"badges,omitempty"`
 }
 
-type EmoticonS struct {
-	Emoticons []*EmoteS `json:"emoticons,omitempty"`
+type EmoticonsS struct {
+	Emoticons []*EmoticonS `json:"emoticons,omitempty"`
 }
 
-type EmoteS struct {
+type EmoticonS struct {
 	Regex string `json:"regex,omitempty"`
 	Images []*ImageS `json:"images,omitempty"`
 }
@@ -24,7 +24,11 @@ type ImageS struct {
 	Url         string `json:"url,omitempty"`
 }
 
-func (c *Method) Channel(name string) (*ChatLinks, error) {
+type ChatMethod struct {
+	client *Client
+}
+
+func (c *ChatMethod) Channel(name string) (*ChatLinks, error) {
 	rel := "chat/" + name
 
 	chatLinks := new(ChatLinks)
@@ -32,7 +36,7 @@ func (c *Method) Channel(name string) (*ChatLinks, error) {
 	return chatLinks, err
 }
 
-func (c *Method) Emoticons() (*EmoticonsS, error) {
+func (c *ChatMethod) Emoticons() (*EmoticonsS, error) {
 	rel := "chat/emoticons"
 
 	emoticons := new(EmoticonsS)

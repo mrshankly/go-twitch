@@ -38,8 +38,12 @@ type FollowedS struct {
 	Links    *LinksS    `json:"_links,omitempty"`
 }
 
+type StreamsMethod struct {
+	client *Client
+}
+
 // Returns a stream object if online.
-func (s *Method) Channel(name string) (*SChannelS, error) {
+func (s *StreamsMethod) Channel(name string) (*SChannelS, error) {
 	rel := "streams/" + name
 
 	stream := new(SChannelS)
@@ -48,7 +52,7 @@ func (s *Method) Channel(name string) (*SChannelS, error) {
 }
 
 // Returns a list of stream objects according to optional parameters.
-func (s *Method) List(opt *ListOptions) (*StreamsS, error) {
+func (s *StreamsMethod) List(opt *ListOptions) (*StreamsS, error) {
 	rel := "streams"
 	if opt != nil {
 		p := url.Values{
@@ -69,7 +73,7 @@ func (s *Method) List(opt *ListOptions) (*StreamsS, error) {
 }
 
 // Returns a list of featured (promoted) stream objects.
-func (s *Method) Featured(opt *ListOptions) (*FeaturedS, error) {
+func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 	rel := "streams/featured"
 	if opt != nil {
 		p := url.Values{
@@ -86,7 +90,7 @@ func (s *Method) Featured(opt *ListOptions) (*FeaturedS, error) {
 }
 
 // Returns a summary of current streams.
-func (s *Method) Summary(opt *ListOptions) (*SummaryS, error) {
+func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 	rel := "streams/summary"
 	if opt != nil {
 		p := url.Values{"game":  []string{opt.Game}}
@@ -99,7 +103,7 @@ func (s *Method) Summary(opt *ListOptions) (*SummaryS, error) {
 }
 
 // Returns a list of stream objects that the authenticated user is following.
-func (s *Method) Followed(opt *ListOptions) (*FollowedS, error) {
+func (s *StreamsMethod) Followed(opt *ListOptions) (*FollowedS, error) {
 	rel := "streams/followed"
 	if opt != nil {
 		p := url.Values{
