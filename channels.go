@@ -14,6 +14,12 @@ type VideosS struct {
 	Links  *LinksS   `json:"_links,omitempty"`
 }
 
+// used with GET /channels/:channel/editors
+type EditorsS struct {
+	Users []*UserS `json:"users,omitempty"`
+	Links *LinksS  `json:"_links,omitempty"`
+}
+
 // used with GET /channels/:channel/follows
 type FollowsS struct {
 	Follows []*follow `json:"follows,omitempty"`
@@ -39,6 +45,15 @@ func (c *ChannelsMethod) Channel(name string) (*ChannelS, error) {
 	channel := new(ChannelS)
 	_, err := c.client.Get(rel, channel)
 	return channel, err
+}
+
+// Returns a list of users who are editors of channel `name`.
+func (c *ChannelsMethod) Editors(name string) (*EditorsS, error) {
+	rel := "channels/" + name + "/editors"
+
+	editors := new(EditorsS)
+	_, err := c.client.Get(rel, editors)
+	return editors, err
 }
 
 // Returns a list of videos ordered by time of creation, starting with the most

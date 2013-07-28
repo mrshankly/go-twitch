@@ -98,4 +98,5 @@ type ListOptions struct {
 	Hls        bool
 	ClientId   string
 	Direction  string
+	Live       bool
 }
