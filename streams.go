@@ -32,6 +32,12 @@ type SummaryS struct {
 	Channels int `json:"channels,omitempty"`
 }
 
+// used with GET /streams/followed
+type FollowedS struct {
+	Streams  []*StreamS `json:"streams,omitempty"`
+	Links    *LinksS    `json:"_links,omitempty"`
+}
+
 // Returns a stream object if online.
 func (s *Method) Channel(name string) (*SChannelS, error) {
 	rel := "streams/" + name
@@ -92,4 +98,19 @@ func (s *Method) Summary(opt *ListOptions) (*SummaryS, error) {
 	return summary, err
 }
 
-// TODO GET /streams/followed
+// Returns a list of stream objects that the authenticated user is following.
+func (s *Method) Followed(opt *ListOptions) (*FollowedS, error) {
+	rel := "streams/followed"
+	if opt != nil {
+		p := url.Values{
+			"limit":  []string{strconv.Itoa(opt.Limit)},
+			"offset": []string{strconv.Itoa(opt.Offset)},
+			"hls":    []string{strconv.FormatBool(opt.Hls)},
+		}
+		rel += "?" + p.Encode()
+	}
+
+	followed := new(FollowedS)
+	_, err := s.client.Get(rel, followed)
+	return followed, err
+}
