@@ -77,9 +77,9 @@ type LinksS struct {
 }
 
 type ChannelLinksS struct {
-    Chat       string `json:"chat,omitempty"`
-    Commercial string `json:"commercial,omitempty"`
-    Videos     string `json:"videos,omitempty"`
+	Chat       string `json:"chat,omitempty"`
+	Commercial string `json:"commercial,omitempty"`
+	Videos     string `json:"videos,omitempty"`
 }
 
 type PreviewS struct {
