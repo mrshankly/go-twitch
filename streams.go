@@ -87,7 +87,7 @@ func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 	rel := "streams/summary"
 	if opt != nil {
-		p := url.Values{"game":  []string{strconv.Itoa(opt.Game)}}
+		p := url.Values{"game":  []string{opt.Game}}
 		rel += "?" + p.Encode()
 	}
 
