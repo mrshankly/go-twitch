@@ -49,6 +49,7 @@ type UserS struct {
 	Logo        string `json:"logo,omitempty"`
 	ID          string `json:"_id,omitempty"`
 	DisplayName string `json:"display_name,omitempty"`
+	Staff       bool   `json:"staff,omitempty"`
 }
 
 // Video object
@@ -99,4 +100,5 @@ type ListOptions struct {
 	ClientId   string
 	Direction  string
 	Live       bool
+	Period     string
 }

@@ -4,6 +4,7 @@
 package twitch
 
 import (
+	"fmt"
 	"strconv"
 	"net/url"
 )
@@ -22,11 +23,22 @@ type EditorsS struct {
 
 // used with GET /channels/:channel/follows
 type FollowsS struct {
-	Follows []*follow `json:"follows,omitempty"`
+	Follows []*FollowS `json:"follows,omitempty"`
 	Links   *LinksS   `json:"_links,omitempty"`
 }
 
-type follow struct {
+type FollowS struct {
+	User *UserS `json:"user,omitempty"`
+}
+
+type SubsS struct {
+	Total         int     `json:"_total,omitempty"`
+	Links         *LinksS `json:"_links,omitempty"`
+	Subscriptions []*SubS `json:"subscriptions,omitempty"`
+}
+
+type SubS struct {
+	Id   string `json:"_id,omitempty"`
 	User *UserS `json:"user,omitempty"`
 }
 
@@ -88,6 +100,30 @@ func (c *ChannelsMethod) Follows(name string, opt *ListOptions) (*FollowsS, erro
 	follow := new(FollowsS)
 	_, err := c.client.Get(rel, follow)
 	return follow, err
+}
+
+func (c *ChannelsMethod) Subscriptions(name string, opt *ListOptions) (*SubsS, error) {
+	rel := "channels/" + name + "/subscriptions"
+	if opt != nil {
+		p := url.Values{
+			"limit":     []string{strconv.Itoa(opt.Limit)},
+			"offset":    []string{strconv.Itoa(opt.Offset)},
+			"direction": []string{opt.Direction},
+		}
+		rel += "?" + p.Encode()
+	}
+
+	subs := new(SubsS)
+	_, err := c.client.Get(rel, subs)
+	return subs, err
+}
+
+func (c *ChannelsMethod) Subscription(name string, user string) (*SubS, error) {
+	rel := fmt.Sprintf("channels/%s/subscriptions/%s", name, user)
+
+	sub := new(SubS)
+	_, err := c.client.Get(rel, sub)
+	return sub, err
 }
 
 // TODO PUT /channels/:channel/

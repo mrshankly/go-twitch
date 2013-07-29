@@ -20,6 +20,8 @@ type Client struct {
 	Search   *SearchMethod
 	Streams  *StreamsMethod
 	Teams    *TeamsMethod
+	Users    *UsersMethod
+	Videos   *VideosMethod
 }
 
 // Returns a new twitch client used to communicate with the API.
@@ -34,6 +36,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Search   = &SearchMethod{client: c}
 	c.Streams  = &StreamsMethod{client: c}
 	c.Teams    = &TeamsMethod{client: c}
+	c.Users    = &UsersMethod{client: c}
+	c.Videos   = &VideosMethod{client: c}
 
 	return c
 }
