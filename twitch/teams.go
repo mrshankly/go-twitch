@@ -1,13 +1,13 @@
 package twitch
 
 import (
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 type TeamsS struct {
-	Teams []*TeamS `json:"teams:omitempty"`
-	Links *LinksS  `json:"_links:omitempty"`
+	Teams []TeamS `json:"teams:omitempty"`
+	Links *LinksS `json:"_links:omitempty"`
 }
 
 type TeamsMethod struct {

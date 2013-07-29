@@ -1,15 +1,15 @@
 package twitch
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/url"
-	"encoding/json"
 )
 
-const rootURL   = "https://api.twitch.tv/kraken/"
+const rootURL = "https://api.twitch.tv/kraken/"
 
 type Client struct {
-	client *http.Client
+	client  *http.Client
 	BaseURL *url.URL
 
 	// Twitch api methods

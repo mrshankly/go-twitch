@@ -2,13 +2,13 @@ package twitch
 
 import (
 	"fmt"
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 type BlocksS struct {
-	Blocks []*BlockS `json:"blocks,omitempty"`
-	Links  *LinksS   `json:"_links,omitempty"`
+	Blocks []BlockS `json:"blocks,omitempty"`
+	Links  *LinksS  `json:"_links,omitempty"`
 }
 
 type BlockS struct {
@@ -17,8 +17,8 @@ type BlockS struct {
 }
 
 type UFollowsS struct {
-	Follows []*UFollowS `json:"follows,omitempty"`
-	Links   *LinksS     `json:"_links,omitempty"`
+	Follows []UFollowS `json:"follows,omitempty"`
+	Links   *LinksS    `json:"_links,omitempty"`
 }
 
 type UFollowS struct {

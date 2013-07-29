@@ -4,8 +4,8 @@
 package twitch
 
 import (
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 // used with GET /streams/:channel/
@@ -16,14 +16,14 @@ type SChannelS struct {
 
 // used with GET /streams
 type StreamsS struct {
-	Streams []*StreamS `json:"streams,omitempty"`
-	Links   *LinksS    `json:"_links,omitempty"`
+	Streams []StreamS `json:"streams,omitempty"`
+	Links   *LinksS   `json:"_links,omitempty"`
 }
 
 // used with GET /streams/featured
 type FeaturedS struct {
-	Featured []*FStreamS `json:"featured,omitempty"`
-	Links    *LinksS     `json:"_links,omitempty"`
+	Featured []FStreamS `json:"featured,omitempty"`
+	Links    *LinksS    `json:"_links,omitempty"`
 }
 
 // used with GET /streams/summary
@@ -34,8 +34,8 @@ type SummaryS struct {
 
 // used with GET /streams/followed
 type FollowedS struct {
-	Streams  []*StreamS `json:"streams,omitempty"`
-	Links    *LinksS    `json:"_links,omitempty"`
+	Streams []StreamS `json:"streams,omitempty"`
+	Links   *LinksS   `json:"_links,omitempty"`
 }
 
 type StreamsMethod struct {
@@ -93,7 +93,7 @@ func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 	rel := "streams/summary"
 	if opt != nil {
-		p := url.Values{"game":  []string{opt.Game}}
+		p := url.Values{"game": []string{opt.Game}}
 		rel += "?" + p.Encode()
 	}
 

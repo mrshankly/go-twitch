@@ -4,8 +4,8 @@ package twitch
 type ChannelS struct {
 	Name        string         `json:"name,omitempty"`
 	Game        string         `json:"game,omitempty"`
-	Delay       int            `json:"game,omitempty"`
-	Teams       []*TeamS       `json:"teams,omitempty"`
+	Delay       int            `json:"delay,omitempty"`
+	Teams       []TeamS        `json:"teams,omitempty"`
 	Title       string         `json:"title,omitempty"`
 	Banner      string         `json:"banner,omitempty"`
 	VideoBanner string         `json:"video_banner,omitempty"`
@@ -16,9 +16,9 @@ type ChannelS struct {
 	Url         string         `json:"url,omitempty"`
 	DisplayName string         `json:"display_name,omitempty"`
 	// authenticated
-	StreamKey   string         `json:"stream_key,omitempty"`
-	Login       string         `json:"login,omitempty"`
-	Email       string         `json:"email,omitempty"`
+	StreamKey string `json:"stream_key,omitempty"`
+	Login     string `json:"login,omitempty"`
+	Email     string `json:"email,omitempty"`
 }
 
 // Team object
@@ -71,10 +71,7 @@ type FStreamS struct {
 }
 
 type LinksS struct {
-	Summary  string `json:"summary,omitempty"`
-	Followed string `json:"followed,omitempty"`
-	Next     string `json:"streams,omitempty"`
-	Featured string `json:"featured,omitempty"`
+	Next string `json:"next,omitempty"`
 }
 
 type ChannelLinksS struct {

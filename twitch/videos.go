@@ -1,8 +1,8 @@
 package twitch
 
 import (
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 type VideosMethod struct {

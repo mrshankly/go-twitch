@@ -2,12 +2,12 @@ package twitch
 
 import (
 	"fmt"
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 type SGamesS struct {
-	Games []*SGameS `json:"games:omitempty"`
+	Games []SGameS `json:"games:omitempty"`
 }
 
 type SGameS struct {

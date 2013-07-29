@@ -1,14 +1,14 @@
 package twitch
 
 import (
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 type TopsS struct {
-	Links *LinksS  `json:"_links:omitempty"`
-	Total int      `json:"_total:omitempty"`
-	Top   []*TopS  `json:"top:omitempty"`
+	Links *LinksS `json:"_links:omitempty"`
+	Total int     `json:"_total:omitempty"`
+	Top   []TopS  `json:"top:omitempty"`
 }
 
 type TopS struct {

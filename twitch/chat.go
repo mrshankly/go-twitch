@@ -9,12 +9,12 @@ type ChatLinks struct {
 }
 
 type EmoticonsS struct {
-	Emoticons []*EmoticonS `json:"emoticons,omitempty"`
+	Emoticons []EmoticonS `json:"emoticons,omitempty"`
 }
 
 type EmoticonS struct {
-	Regex string     `json:"regex,omitempty"`
-	Images []*ImageS `json:"images,omitempty"`
+	Regex  string   `json:"regex,omitempty"`
+	Images []ImageS `json:"images,omitempty"`
 }
 
 type ImageS struct {

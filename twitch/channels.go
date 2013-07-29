@@ -5,25 +5,26 @@ package twitch
 
 import (
 	"fmt"
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 // used with GET /channels/:channel/videos
 type VideosS struct {
-	Videos []*VideoS `json:"videos,omitempty"`
-	Links  *LinksS   `json:"_links,omitempty"`
+	Videos []VideoS `json:"videos,omitempty"`
+	Links  *LinksS  `json:"_links,omitempty"`
 }
 
 // used with GET /channels/:channel/editors
 type EditorsS struct {
-	Users []*UserS `json:"users,omitempty"`
-	Links *LinksS  `json:"_links,omitempty"`
+	Users []UserS `json:"users,omitempty"`
+	Links *LinksS `json:"_links,omitempty"`
 }
 
 // used with GET /channels/:channel/follows
 type FollowsS struct {
-	Follows []*FollowS `json:"follows,omitempty"`
+	Follows []FollowS `json:"follows,omitempty"`
+	Total   int       `json:"_total,omitempty"`
 	Links   *LinksS   `json:"_links,omitempty"`
 }
 
@@ -34,7 +35,7 @@ type FollowS struct {
 type SubsS struct {
 	Total         int     `json:"_total,omitempty"`
 	Links         *LinksS `json:"_links,omitempty"`
-	Subscriptions []*SubS `json:"subscriptions,omitempty"`
+	Subscriptions []SubS  `json:"subscriptions,omitempty"`
 }
 
 type SubS struct {

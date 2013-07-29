@@ -1,7 +1,7 @@
 package twitch
 
 type IngestsS struct {
-	Ingests []*IngestS `json:"ingests:omitempty"`
+	Ingests []IngestS `json:"ingests:omitempty"`
 }
 
 type IngestS struct {
