@@ -8,29 +8,29 @@ import (
 
 type BlocksS struct {
 	Blocks []BlockS `json:"blocks,omitempty"`
-	Links  *LinksS  `json:"_links,omitempty"`
+	Links  LinksS   `json:"_links,omitempty"`
 }
 
 type BlockS struct {
-	User *UserS `json:"user,omitempty"`
-	Id   int    `json:"_id,omitempty"`
+	User UserS `json:"user,omitempty"`
+	Id   int   `json:"_id,omitempty"`
 }
 
 type UFollowsS struct {
 	Follows []UFollowS `json:"follows,omitempty"`
-	Links   *LinksS    `json:"_links,omitempty"`
+	Links   LinksS     `json:"_links,omitempty"`
 }
 
 type UFollowS struct {
-	Channel *ChannelS `json:"channel,omitempty"`
+	Channel ChannelS `json:"channel,omitempty"`
 }
 
 type UTargetS struct {
-	Channel *ChannelS `json:"channel,omitempty"`
+	Channel ChannelS `json:"channel,omitempty"`
 }
 
 type UsersMethod struct {
-	client *Client
+	client Client
 }
 
 func (u *UsersMethod) Channel(user string) (*UserS, error) {

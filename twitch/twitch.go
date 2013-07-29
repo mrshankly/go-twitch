@@ -30,14 +30,14 @@ func NewClient(httpClient *http.Client) *Client {
 
 	c := &Client{client: httpClient, BaseURL: baseURL}
 	c.Channels = &ChannelsMethod{client: c}
-	c.Chat     = &ChatMethod{client: c}
-	c.Games    = &GamesMethod{client: c}
-	c.Ingests  = &IngestsMethod{client: c}
-	c.Search   = &SearchMethod{client: c}
-	c.Streams  = &StreamsMethod{client: c}
-	c.Teams    = &TeamsMethod{client: c}
-	c.Users    = &UsersMethod{client: c}
-	c.Videos   = &VideosMethod{client: c}
+	c.Chat = &ChatMethod{client: c}
+	c.Games = &GamesMethod{client: c}
+	c.Ingests = &IngestsMethod{client: c}
+	c.Search = &SearchMethod{client: c}
+	c.Streams = &StreamsMethod{client: c}
+	c.Teams = &TeamsMethod{client: c}
+	c.Users = &UsersMethod{client: c}
+	c.Videos = &VideosMethod{client: c}
 
 	return c
 }

@@ -11,13 +11,13 @@ type SGamesS struct {
 }
 
 type SGameS struct {
-	Box         *PreviewS `json:"box:omitempty"`
-	Logo        *PreviewS `json:"logo:omitempty"`
-	Images      *ImagesS  `json:"images:omitempty"`
-	Popularity  int       `json:"popularity:omitempty"`
-	Name        string    `json:"name:omitempty"`
-	Id          int       `json:"_id:omitempty"`
-	GiantbombId int       `json:"giantbomb_id:omitempty"`
+	Box         PreviewS `json:"box:omitempty"`
+	Logo        PreviewS `json:"logo:omitempty"`
+	Images      ImagesS  `json:"images:omitempty"`
+	Popularity  int      `json:"popularity:omitempty"`
+	Name        string   `json:"name:omitempty"`
+	Id          int      `json:"_id:omitempty"`
+	GiantbombId int      `json:"giantbomb_id:omitempty"`
 }
 
 type ImagesS struct {

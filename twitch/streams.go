@@ -10,20 +10,20 @@ import (
 
 // used with GET /streams/:channel/
 type SChannelS struct {
-	Stream *StreamS `json:"stream,omitempty"`
-	Links  *LinksS  `json:"_links,omitempty"`
+	Stream StreamS `json:"stream,omitempty"`
+	Links  LinksS  `json:"_links,omitempty"`
 }
 
 // used with GET /streams
 type StreamsS struct {
 	Streams []StreamS `json:"streams,omitempty"`
-	Links   *LinksS   `json:"_links,omitempty"`
+	Links   LinksS    `json:"_links,omitempty"`
 }
 
 // used with GET /streams/featured
 type FeaturedS struct {
 	Featured []FStreamS `json:"featured,omitempty"`
-	Links    *LinksS    `json:"_links,omitempty"`
+	Links    LinksS     `json:"_links,omitempty"`
 }
 
 // used with GET /streams/summary
@@ -35,7 +35,7 @@ type SummaryS struct {
 // used with GET /streams/followed
 type FollowedS struct {
 	Streams []StreamS `json:"streams,omitempty"`
-	Links   *LinksS   `json:"_links,omitempty"`
+	Links   LinksS    `json:"_links,omitempty"`
 }
 
 type StreamsMethod struct {

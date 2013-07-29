@@ -2,19 +2,19 @@ package twitch
 
 // Channel object
 type ChannelS struct {
-	Name        string         `json:"name,omitempty"`
-	Game        string         `json:"game,omitempty"`
-	Delay       int            `json:"delay,omitempty"`
-	Teams       []TeamS        `json:"teams,omitempty"`
-	Title       string         `json:"title,omitempty"`
-	Banner      string         `json:"banner,omitempty"`
-	VideoBanner string         `json:"video_banner,omitempty"`
-	Background  string         `json:"background,omitempty"`
-	Links       *ChannelLinksS `json:"_links,omitempty"`
-	Logo        string         `json:"logo,omitempty"`
-	Mature      bool           `json:"mature,omitempty"`
-	Url         string         `json:"url,omitempty"`
-	DisplayName string         `json:"display_name,omitempty"`
+	Name        string        `json:"name,omitempty"`
+	Game        string        `json:"game,omitempty"`
+	Delay       int           `json:"delay,omitempty"`
+	Teams       []TeamS       `json:"teams,omitempty"`
+	Title       string        `json:"title,omitempty"`
+	Banner      string        `json:"banner,omitempty"`
+	VideoBanner string        `json:"video_banner,omitempty"`
+	Background  string        `json:"background,omitempty"`
+	Links       ChannelLinksS `json:"_links,omitempty"`
+	Logo        string        `json:"logo,omitempty"`
+	Mature      bool          `json:"mature,omitempty"`
+	Url         string        `json:"url,omitempty"`
+	DisplayName string        `json:"display_name,omitempty"`
 	// authenticated
 	StreamKey string `json:"stream_key,omitempty"`
 	Login     string `json:"login,omitempty"`
@@ -33,14 +33,14 @@ type TeamS struct {
 
 // Stream oject
 type StreamS struct {
-	Game        string    `json:"game,omitempty"`
-	Name        string    `json:"name,omitempty"`
-	Preview     *PreviewS `json:"preview,omitempty"`
-	Viewers     int       `json:"viewers,omitempty"`
-	Broadcaster string    `json:"broadcaster,omitempty"`
-	Geo         string    `json:"geo,omitempty"`
-	Channel     *ChannelS `json:"channel,omitempty"`
-	Status      string    `json:"status,omitempty"`
+	Game        string   `json:"game,omitempty"`
+	Name        string   `json:"name,omitempty"`
+	Preview     PreviewS `json:"preview,omitempty"`
+	Viewers     int      `json:"viewers,omitempty"`
+	Broadcaster string   `json:"broadcaster,omitempty"`
+	Geo         string   `json:"geo,omitempty"`
+	Channel     ChannelS `json:"channel,omitempty"`
+	Status      string   `json:"status,omitempty"`
 }
 
 // User object
@@ -65,9 +65,9 @@ type VideoS struct {
 }
 
 type FStreamS struct {
-	Stream *StreamS `json:"stream,omitempty"`
-	Text   string   `json:"text,omitempty"`
-	Image  string   `json:"image,omitempty"`
+	Stream StreamS `json:"stream,omitempty"`
+	Text   string  `json:"text,omitempty"`
+	Image  string  `json:"image,omitempty"`
 }
 
 type LinksS struct {

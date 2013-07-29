@@ -7,7 +7,7 @@ import (
 
 type TeamsS struct {
 	Teams []TeamS `json:"teams:omitempty"`
-	Links *LinksS `json:"_links:omitempty"`
+	Links LinksS  `json:"_links:omitempty"`
 }
 
 type TeamsMethod struct {
