@@ -30,7 +30,7 @@ type UTargetS struct {
 }
 
 type UsersMethod struct {
-	client Client
+	client *Client
 }
 
 func (u *UsersMethod) Channel(user string) (*UserS, error) {
