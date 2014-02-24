@@ -7,27 +7,27 @@ import (
 )
 
 type SGamesS struct {
-	Games []SGameS `json:"games:omitempty"`
+	Games []SGameS `json:"games,omitempty"`
 }
 
 type SGameS struct {
-	Box         PreviewS `json:"box:omitempty"`
-	Logo        PreviewS `json:"logo:omitempty"`
-	Images      ImagesS  `json:"images:omitempty"`
-	Popularity  int      `json:"popularity:omitempty"`
-	Name        string   `json:"name:omitempty"`
-	Id          int      `json:"_id:omitempty"`
-	GiantbombId int      `json:"giantbomb_id:omitempty"`
+	Box         PreviewS `json:"box,omitempty"`
+	Logo        PreviewS `json:"logo,omitempty"`
+	Images      ImagesS  `json:"images,omitempty"`
+	Popularity  int      `json:"popularity,omitempty"`
+	Name        string   `json:"name,omitempty"`
+	Id          int      `json:"_id,omitempty"`
+	GiantbombId int      `json:"giantbomb_id,omitempty"`
 }
 
 type ImagesS struct {
-	Thumb  string `json:"thumb:omitempty"`
-	Tiny   string `json:"tiny:omitempty"`
-	Small  string `json:"small:omitempty"`
-	Super  string `json:"super:omitempty"`
-	Medium string `json:"medium:omitempty"`
-	Icon   string `json:"icon:omitempty"`
-	Screen string `json:"screen:omitempty"`
+	Thumb  string `json:"thumb,omitempty"`
+	Tiny   string `json:"tiny,omitempty"`
+	Small  string `json:"small,omitempty"`
+	Super  string `json:"super,omitempty"`
+	Medium string `json:"medium,omitempty"`
+	Icon   string `json:"icon,omitempty"`
+	Screen string `json:"screen,omitempty"`
 }
 
 type SearchMethod struct {
