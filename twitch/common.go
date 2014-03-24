@@ -2,19 +2,30 @@ package twitch
 
 // Channel object
 type ChannelS struct {
-	Name        string        `json:"name,omitempty"`
-	Game        string        `json:"game,omitempty"`
-	Delay       int           `json:"delay,omitempty"`
-	Teams       []TeamS       `json:"teams,omitempty"`
-	Title       string        `json:"title,omitempty"`
-	Banner      string        `json:"banner,omitempty"`
-	VideoBanner string        `json:"video_banner,omitempty"`
-	Background  string        `json:"background,omitempty"`
-	Links       ChannelLinksS `json:"_links,omitempty"`
-	Logo        string        `json:"logo,omitempty"`
-	Mature      bool          `json:"mature,omitempty"`
-	Url         string        `json:"url,omitempty"`
-	DisplayName string        `json:"display_name,omitempty"`
+	Name                         string        `json:"name,omitempty"`
+	Status                       string        `json:"status,omitempty"`
+	Game                         string        `json:"game,omitempty"`
+	Delay                        int           `json:"delay,omitempty"`
+	Id                           int           `json:"_id,omitempty"`
+	CreatedAt                    string        `json:"created_at,omitempty"`
+	UpdatedAt                    string        `json:"updated_at,omitempty"`
+	PrimaryTeamName              string        `json:"primary_team_name,omitempty"`
+	PrimaryTeamDisplayName       string        `json:"primary_team_display_name,omitempty"`
+	Teams                        []TeamS       `json:"teams,omitempty"`
+	Title                        string        `json:"title,omitempty"`
+	Mature                       bool          `json:"mature,omitempty"`
+	AbuseReported                bool          `json:"abuse_reported,omitempty"`
+	Banner                       string        `json:"banner,omitempty"`
+	VideoBanner                  string        `json:"video_banner,omitempty"`
+	Views                        int           `json:"views,omitempty"`
+	Followers                    int           `json:"followers,omitempty"`
+	Background                   string        `json:"background,omitempty"`
+	ProfileBanner                string        `json:"profile_banner,omitempty"`
+	ProfileBannerBackgroundColor string        `json:"profile_banner_background_color,omitempty"`
+	Links                        ChannelLinksS `json:"_links,omitempty"`
+	Logo                         string        `json:"logo,omitempty"`
+	Url                          string        `json:"url,omitempty"`
+	DisplayName                  string        `json:"display_name,omitempty"`
 	// authenticated
 	StreamKey string `json:"stream_key,omitempty"`
 	Login     string `json:"login,omitempty"`
@@ -23,19 +34,23 @@ type ChannelS struct {
 
 // Team object
 type TeamS struct {
+	Id          int    `json:"_id,omitempty"`
 	Name        string `json:"name,omitempty"`
 	Background  string `json:"background,omitempty"`
 	Banner      string `json:"banner,omitempty"`
 	Logo        string `json:"logo,omitempty"`
 	Info        string `json:"info,omitempty"`
 	DisplayName string `json:"display_name,omitempty"`
+	CreatedAt   string `json:"created_at,omitempty"`
+	UpdatedAt   string `json:"updated_at,omitempty"`
 }
 
 // Stream oject
 type StreamS struct {
+	Id          int      `json:"_id,omitempty"`
 	Game        string   `json:"game,omitempty"`
 	Name        string   `json:"name,omitempty"`
-	Preview     PreviewS `json:"preview,omitempty"`
+	Preview     string   `json:"preview,omitempty"`
 	Viewers     int      `json:"viewers,omitempty"`
 	Broadcaster string   `json:"broadcaster,omitempty"`
 	Geo         string   `json:"geo,omitempty"`
@@ -75,9 +90,15 @@ type LinksS struct {
 }
 
 type ChannelLinksS struct {
-	Chat       string `json:"chat,omitempty"`
-	Commercial string `json:"commercial,omitempty"`
-	Videos     string `json:"videos,omitempty"`
+	Chat         string `json:"chat,omitempty"`
+	Commercial   string `json:"commercial,omitempty"`
+	Videos       string `json:"videos,omitempty"`
+	Teams        string `json:"teams,omitempty"`
+	Editors      string `json:"editors,omitempty"`
+	Subsciptions string `json:subscriptions,omitempty"`
+	Features     string `json:"features,omitempty"`
+	StreamKey    string `json:"stream_key,omitempty"`
+	Follows      string `json:follows,omitempty"`
 }
 
 type PreviewS struct {

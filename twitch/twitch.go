@@ -2,9 +2,7 @@ package twitch
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"os"
 )
@@ -51,30 +49,36 @@ func NewClient(httpClient *http.Client) *Client {
 // decoded and stored in the value pointed by r.
 func (c *Client) Get(path string, r interface{}) (*http.Response, error) {
 	rel, err := url.Parse(path)
+
 	if err != nil {
 		return nil, err
 	}
+
 	u := c.BaseURL.ResolveReference(rel)
 
 	req, err := http.NewRequest("GET", u.String(), nil)
+
 	if err != nil {
 		return nil, err
+
 	}
 	req.Header.Add("Accept", "application/vnd.twitchtv.v2+json")
+
 	if len(c.ClientId) != 0 {
 		req.Header.Add("Client-ID", c.ClientId)
+
 	}
-	b, _ := httputil.DumpRequestOut(req, true)
-	s := string(b[:])
-	fmt.Printf("req: %s", s)
 	resp, err := c.client.Do(req)
+
 	if err != nil {
 		return nil, err
 	}
+
 	defer resp.Body.Close()
 
 	if r != nil {
 		err = json.NewDecoder(resp.Body).Decode(r)
 	}
+
 	return resp, err
 }
