@@ -16,6 +16,7 @@ type SChannelS struct {
 
 // used with GET /streams
 type StreamsS struct {
+	Total   int       `json:"_total,omitempty"`
 	Streams []StreamS `json:"streams,omitempty"`
 	Links   LinksS    `json:"_links,omitempty"`
 }
