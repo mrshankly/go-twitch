@@ -2,9 +2,11 @@ package twitch
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 )
 
 const rootURL = "https://api.twitch.tv/kraken/"
@@ -72,6 +74,10 @@ func (c *Client) Get(path string, r interface{}) (*http.Response, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNotModified {
+		return nil, errors.New("api error, response code: " + strconv.Itoa(resp.StatusCode))
 	}
 
 	defer resp.Body.Close()

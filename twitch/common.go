@@ -69,14 +69,18 @@ type UserS struct {
 
 // Video object
 type VideoS struct {
-	Title       string `json:"title,omitempty"`
-	ID          string `json:"_id,omitempty"`
-	Embed       string `json:"embed,omitempty"`
-	Url         string `json:"url,omitempty"`
-	Views       int    `json:"views,omitempty"`
-	Preview     string `json:"preview,omitempty"`
-	Length      int    `json:"length,omitempty"`
-	Description string `json:"description,omitempty"`
+	Title       string   `json:"title,omitempty"`
+	ID          string   `json:"_id,omitempty"`
+	Embed       string   `json:"embed,omitempty"`
+	Url         string   `json:"url,omitempty"`
+	Views       int      `json:"views,omitempty"`
+	Preview     string   `json:"preview,omitempty"`
+	Length      int      `json:"length,omitempty"`
+	Description string   `json:"description,omitempty"`
+	BroadcastId int      `json:"broadcast_id"`
+	RecordedAt  string   `json:"recorded_at,omitempty"`
+	Game        string   `json:"game,omitempty"`
+	Channel     ChannelS `json:"channel,omitempty"`
 }
 
 type FStreamS struct {
@@ -95,10 +99,10 @@ type ChannelLinksS struct {
 	Videos       string `json:"videos,omitempty"`
 	Teams        string `json:"teams,omitempty"`
 	Editors      string `json:"editors,omitempty"`
-	Subsciptions string `json:subscriptions,omitempty"`
+	Subsciptions string `json:"subscriptions,omitempty"`
 	Features     string `json:"features,omitempty"`
 	StreamKey    string `json:"stream_key,omitempty"`
-	Follows      string `json:follows,omitempty"`
+	Follows      string `json:"follows,omitempty"`
 }
 
 type PreviewS struct {
