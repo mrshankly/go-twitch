@@ -1,5 +1,7 @@
 # go-twitch
 
+[![travis-ci status](https://api.travis-ci.org/mrshankly/go-twitch.png)](https://travis-ci.org/mrshankly/go-twitch)
+
 Go library for accessing the [Twitch-API](https://github.com/justintv/Twitch-API).
 
 **This is still a work in progress.**
