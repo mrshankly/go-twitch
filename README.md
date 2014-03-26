@@ -13,7 +13,7 @@ Check the progress [here](https://github.com/mrshankly/go-twitch/issues/1).
 To install `go-twitch` run the command:
 
 ```bash
-$ go get github.com/mrshankly/go-twitch
+$ go get github.com/mrshankly/go-twitch/twitch
 ```
 
 Here's an example program that gets the top 10 twitch games:
