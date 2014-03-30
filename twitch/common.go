@@ -62,9 +62,11 @@ type StreamS struct {
 type UserS struct {
 	Name        string `json:"name,omitempty"`
 	Logo        string `json:"logo,omitempty"`
-	ID          string `json:"_id,omitempty"`
+	ID          int    `json:"_id,omitempty"`
 	DisplayName string `json:"display_name,omitempty"`
 	Staff       bool   `json:"staff,omitempty"`
+	CreatedAt   string `json:"created_at,omitempty"`
+	UpdatedAt   string `json:"updated_at,omitempty"`
 }
 
 // Video object
