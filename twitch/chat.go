@@ -4,6 +4,10 @@
 package twitch
 
 type ChatLinks struct {
+	Links ChatLinksS `json:"_links,omitempty"`
+}
+
+type ChatLinksS struct {
 	Emoticons string `json:"emoticons,omitempty"`
 	Badges    string `json:"badges,omitempty"`
 }

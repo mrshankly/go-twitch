@@ -19,6 +19,7 @@ type BlockS struct {
 type UFollowsS struct {
 	Follows []UFollowS `json:"follows,omitempty"`
 	Links   LinksS     `json:"_links,omitempty"`
+	Total   int        `json:"_total,omitempty"`
 }
 
 type UFollowS struct {
@@ -26,11 +27,21 @@ type UFollowS struct {
 }
 
 type UTargetS struct {
-	Channel ChannelS `json:"channel,omitempty"`
+	Channel   ChannelS `json:"channel,omitempty"`
+	CreatedAt string   `json:"created_at,omitempty"`
 }
 
 type UsersMethod struct {
 	client *Client
+}
+
+// User returns a user object.
+func (u *UsersMethod) User(user string) (*UserS, error) {
+	rel := "users/" + user
+
+	usr := new(UserS)
+	_, err := u.client.Get(rel, usr)
+	return usr, err
 }
 
 func (u *UsersMethod) Channel(user string) (*UserS, error) {
@@ -59,13 +70,13 @@ func (u *UsersMethod) Blocks(login string, opt *ListOptions) (*BlocksS, error) {
 	return blocks, err
 }
 
+// Get a user's list of followed channels
 func (u *UsersMethod) Follows(user string, opt *ListOptions) (*UFollowsS, error) {
 	rel := "users/" + user + "/follows/channels"
 	if opt != nil {
 		p := url.Values{
-			"limit":     []string{strconv.Itoa(opt.Limit)},
-			"offset":    []string{strconv.Itoa(opt.Offset)},
-			"direction": []string{opt.Direction},
+			"limit":  []string{strconv.Itoa(opt.Limit)},
+			"offset": []string{strconv.Itoa(opt.Offset)},
 		}
 		rel += "?" + p.Encode()
 	}
@@ -75,6 +86,7 @@ func (u *UsersMethod) Follows(user string, opt *ListOptions) (*UFollowsS, error)
 	return follows, err
 }
 
+// Get status of follow relationship between user and target channel
 func (u *UsersMethod) Follow(user, target string) (*UTargetS, error) {
 	rel := fmt.Sprintf("users/%s/follows/channels/%s", user, target)
 
