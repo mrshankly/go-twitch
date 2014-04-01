@@ -43,7 +43,7 @@ type StreamsMethod struct {
 	client *Client
 }
 
-// Returns a stream object if online.
+// Returns a stream object if live.
 func (s *StreamsMethod) Channel(name string) (*SChannelS, error) {
 	rel := "streams/" + name
 
@@ -55,17 +55,30 @@ func (s *StreamsMethod) Channel(name string) (*SChannelS, error) {
 // Returns a list of stream objects according to optional parameters.
 func (s *StreamsMethod) List(opt *ListOptions) (*StreamsS, error) {
 	rel := "streams"
+
 	if opt != nil {
-		p := url.Values{
-			"game":       []string{opt.Game},
-			"channel":    []string{opt.Channel},
-			"limit":      []string{strconv.Itoa(opt.Limit)},
-			"offset":     []string{strconv.Itoa(opt.Offset)},
-			"embeddable": []string{strconv.FormatBool(opt.Embeddable)},
-			"hls":        []string{strconv.FormatBool(opt.Hls)},
-			"client_id":  []string{opt.ClientId},
+		p := url.Values{}
+		if len(opt.Game) > 0 {
+			p.Add("game", opt.Game)
 		}
-		rel += "?" + p.Encode()
+		if len(opt.Channel) > 0 {
+			p.Add("channel", opt.Channel)
+		}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
+		}
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if opt.Hls != nil {
+			p.Add("hls", strconv.FormatBool(opt.Hls.Show))
+		}
+		if opt.Embeddable != nil {
+			p.Add("embeddable", strconv.FormatBool(opt.Embeddable.Show))
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	streams := new(StreamsS)
@@ -77,12 +90,19 @@ func (s *StreamsMethod) List(opt *ListOptions) (*StreamsS, error) {
 func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 	rel := "streams/featured"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
-			"hls":    []string{strconv.FormatBool(opt.Hls)},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "?" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if opt.Hls != nil {
+			p.Add("hls", strconv.FormatBool(opt.Hls.Show))
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	featured := new(FeaturedS)
@@ -94,8 +114,13 @@ func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 	rel := "streams/summary"
 	if opt != nil {
-		p := url.Values{"game": []string{opt.Game}}
-		rel += "?" + p.Encode()
+		p := url.Values{}
+		if len(opt.Game) > 0 {
+			p.Add("game", opt.Game)
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	summary := new(SummaryS)
@@ -104,13 +129,13 @@ func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 }
 
 // Returns a list of stream objects that the authenticated user is following.
-func (s *StreamsMethod) Followed(opt *ListOptions) (*FollowedS, error) {
+func (s *StreamsMethod) followed(opt *ListOptions) (*FollowedS, error) {
 	rel := "streams/followed"
 	if opt != nil {
 		p := url.Values{
 			"limit":  []string{strconv.Itoa(opt.Limit)},
 			"offset": []string{strconv.Itoa(opt.Offset)},
-			"hls":    []string{strconv.FormatBool(opt.Hls)},
+			//"hls":    []string{strconv.FormatBool(opt.Hls)},
 		}
 		rel += "?" + p.Encode()
 	}

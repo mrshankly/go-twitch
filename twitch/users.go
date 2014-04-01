@@ -44,7 +44,7 @@ func (u *UsersMethod) User(user string) (*UserS, error) {
 	return usr, err
 }
 
-func (u *UsersMethod) Channel(user string) (*UserS, error) {
+func (u *UsersMethod) channel(user string) (*UserS, error) {
 	rel := "user" // get authenticated user
 	if user != "" {
 		rel = "users/" + user
@@ -55,14 +55,19 @@ func (u *UsersMethod) Channel(user string) (*UserS, error) {
 	return usr, err
 }
 
-func (u *UsersMethod) Blocks(login string, opt *ListOptions) (*BlocksS, error) {
+func (u *UsersMethod) blocks(login string, opt *ListOptions) (*BlocksS, error) {
 	rel := "users/" + login + "/blocks"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "?" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	blocks := new(BlocksS)
@@ -74,11 +79,16 @@ func (u *UsersMethod) Blocks(login string, opt *ListOptions) (*BlocksS, error) {
 func (u *UsersMethod) Follows(user string, opt *ListOptions) (*UFollowsS, error) {
 	rel := "users/" + user + "/follows/channels"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "?" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	follows := new(UFollowsS)
@@ -95,7 +105,7 @@ func (u *UsersMethod) Follow(user, target string) (*UTargetS, error) {
 	return follow, err
 }
 
-func (u *UsersMethod) Subscription(user, channel string) (*UTargetS, error) {
+func (u *UsersMethod) subscription(user, channel string) (*UTargetS, error) {
 	rel := fmt.Sprintf("users/%s/subscriptions/%s", user, channel)
 
 	follow := new(UTargetS)

@@ -37,11 +37,16 @@ type SearchMethod struct {
 func (s *SearchMethod) Streams(q string, opt *ListOptions) (*StreamsS, error) {
 	rel := "search/streams?q=" + url.QueryEscape(q)
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "&" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if len(p) > 0 {
+			rel += "&" + p.Encode()
+		}
 	}
 
 	search := new(StreamsS)
@@ -52,8 +57,13 @@ func (s *SearchMethod) Streams(q string, opt *ListOptions) (*StreamsS, error) {
 func (s *SearchMethod) Games(q string, opt *ListOptions) (*SGamesS, error) {
 	rel := fmt.Sprintf("search/games?q=%s&type=suggest", url.QueryEscape(q))
 	if opt != nil {
-		p := url.Values{"live": []string{strconv.FormatBool(opt.Live)}}
-		rel += "&" + p.Encode()
+		p := url.Values{}
+		if opt.Live != nil {
+			p.Add("live", strconv.FormatBool(opt.Live.Show))
+		}
+		if len(p) > 0 {
+			rel += "&" + p.Encode()
+		}
 	}
 
 	search := new(SGamesS)

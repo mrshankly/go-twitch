@@ -11,7 +11,7 @@ func TestGamesTop(t *testing.T) {
 	opt := &ListOptions{
 		Limit:  1,
 		Offset: 0,
-		Hls:    false,
+		Hls:    &Hls{},
 	}
 
 	_, err := tc.Games.Top(opt)

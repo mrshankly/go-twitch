@@ -61,7 +61,7 @@ func (c *ChannelsMethod) Channel(name string) (*ChannelS, error) {
 }
 
 // Returns a list of users who are editors of channel `name`.
-func (c *ChannelsMethod) Editors(name string) (*EditorsS, error) {
+func (c *ChannelsMethod) editors(name string) (*EditorsS, error) {
 	rel := "channels/" + name + "/editors"
 
 	editors := new(EditorsS)
@@ -74,11 +74,16 @@ func (c *ChannelsMethod) Editors(name string) (*EditorsS, error) {
 func (c *ChannelsMethod) Videos(name string, opt *ListOptions) (*VideosS, error) {
 	rel := "channels/" + name + "/videos"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "?" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	videos := new(VideosS)
@@ -90,12 +95,19 @@ func (c *ChannelsMethod) Videos(name string, opt *ListOptions) (*VideosS, error)
 func (c *ChannelsMethod) Follows(name string, opt *ListOptions) (*FollowsS, error) {
 	rel := "channels/" + name + "/follows"
 	if opt != nil {
-		p := url.Values{
-			"limit":     []string{strconv.Itoa(opt.Limit)},
-			"offset":    []string{strconv.Itoa(opt.Offset)},
-			"direction": []string{opt.Direction},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "?" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if len(opt.Direction) > 0 {
+			p.Add("direction", opt.Direction)
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	follow := new(FollowsS)
@@ -103,7 +115,7 @@ func (c *ChannelsMethod) Follows(name string, opt *ListOptions) (*FollowsS, erro
 	return follow, err
 }
 
-func (c *ChannelsMethod) Subscriptions(name string, opt *ListOptions) (*SubsS, error) {
+func (c *ChannelsMethod) subscriptions(name string, opt *ListOptions) (*SubsS, error) {
 	rel := "channels/" + name + "/subscriptions"
 	if opt != nil {
 		p := url.Values{
@@ -119,7 +131,7 @@ func (c *ChannelsMethod) Subscriptions(name string, opt *ListOptions) (*SubsS, e
 	return subs, err
 }
 
-func (c *ChannelsMethod) Subscription(name string, user string) (*SubS, error) {
+func (c *ChannelsMethod) subscription(name string, user string) (*SubS, error) {
 	rel := fmt.Sprintf("channels/%s/subscriptions/%s", name, user)
 
 	sub := new(SubS)

@@ -34,12 +34,19 @@ type GamesMethod struct {
 func (g *GamesMethod) Top(opt *ListOptions) (*TopsS, error) {
 	rel := "games/top"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
-			"hls":    []string{strconv.FormatBool(opt.Hls)},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "?" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if opt.Hls != nil {
+			p.Add("hls", strconv.FormatBool(opt.Hls.Show))
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	games := new(TopsS)

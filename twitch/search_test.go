@@ -26,7 +26,7 @@ func TestSearchGames(t *testing.T) {
 	tc := NewClient(&http.Client{})
 
 	opt := &ListOptions{
-		Live: true,
+		Live: &Live{true},
 	}
 
 	_, err := tc.Search.Games("Diablo", opt)

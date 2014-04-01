@@ -17,11 +17,16 @@ type TeamsMethod struct {
 func (t *TeamsMethod) List(opt *ListOptions) (*TeamsS, error) {
 	rel := "teams"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		p := url.Values{}
+		if opt.Limit > 0 {
+			p.Add("limit", strconv.Itoa(opt.Limit))
 		}
-		rel += "?" + p.Encode()
+		if opt.Offset > 0 {
+			p.Add("offset", strconv.Itoa(opt.Offset))
+		}
+		if len(p) > 0 {
+			rel += "?" + p.Encode()
+		}
 	}
 
 	teams := new(TeamsS)

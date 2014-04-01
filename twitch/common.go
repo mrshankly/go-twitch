@@ -115,14 +115,25 @@ type PreviewS struct {
 }
 
 type ListOptions struct {
-	Game       string
-	Channel    string
-	Limit      int
-	Offset     int
-	Embeddable bool
-	Hls        bool
-	ClientId   string
-	Direction  string
-	Live       bool
-	Period     string
+	Game      string
+	Channel   string
+	Direction string
+	Period    string
+	Limit     int
+	Offset    int
+	*Live
+	*Embeddable
+	*Hls
+}
+
+type Live struct {
+	Show bool
+}
+
+type Hls struct {
+	Show bool
+}
+
+type Embeddable struct {
+	Show bool
 }
