@@ -5,8 +5,7 @@ package twitch
 
 import (
 	"fmt"
-	"net/url"
-	"strconv"
+	"github.com/google/go-querystring/query"
 )
 
 // used with GET /channels/:channel/videos
@@ -61,7 +60,7 @@ func (c *ChannelsMethod) Channel(name string) (*ChannelS, error) {
 }
 
 // Returns a list of users who are editors of channel `name`.
-func (c *ChannelsMethod) Editors(name string) (*EditorsS, error) {
+func (c *ChannelsMethod) editors(name string) (*EditorsS, error) {
 	rel := "channels/" + name + "/editors"
 
 	editors := new(EditorsS)
@@ -74,11 +73,11 @@ func (c *ChannelsMethod) Editors(name string) (*EditorsS, error) {
 func (c *ChannelsMethod) Videos(name string, opt *ListOptions) (*VideosS, error) {
 	rel := "channels/" + name + "/videos"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	videos := new(VideosS)
@@ -90,12 +89,11 @@ func (c *ChannelsMethod) Videos(name string, opt *ListOptions) (*VideosS, error)
 func (c *ChannelsMethod) Follows(name string, opt *ListOptions) (*FollowsS, error) {
 	rel := "channels/" + name + "/follows"
 	if opt != nil {
-		p := url.Values{
-			"limit":     []string{strconv.Itoa(opt.Limit)},
-			"offset":    []string{strconv.Itoa(opt.Offset)},
-			"direction": []string{opt.Direction},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	follow := new(FollowsS)
@@ -103,15 +101,14 @@ func (c *ChannelsMethod) Follows(name string, opt *ListOptions) (*FollowsS, erro
 	return follow, err
 }
 
-func (c *ChannelsMethod) Subscriptions(name string, opt *ListOptions) (*SubsS, error) {
+func (c *ChannelsMethod) subscriptions(name string, opt *ListOptions) (*SubsS, error) {
 	rel := "channels/" + name + "/subscriptions"
 	if opt != nil {
-		p := url.Values{
-			"limit":     []string{strconv.Itoa(opt.Limit)},
-			"offset":    []string{strconv.Itoa(opt.Offset)},
-			"direction": []string{opt.Direction},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	subs := new(SubsS)
@@ -119,7 +116,7 @@ func (c *ChannelsMethod) Subscriptions(name string, opt *ListOptions) (*SubsS, e
 	return subs, err
 }
 
-func (c *ChannelsMethod) Subscription(name string, user string) (*SubS, error) {
+func (c *ChannelsMethod) subscription(name string, user string) (*SubS, error) {
 	rel := fmt.Sprintf("channels/%s/subscriptions/%s", name, user)
 
 	sub := new(SubS)

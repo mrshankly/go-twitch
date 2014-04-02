@@ -1,9 +1,6 @@
 package twitch
 
-import (
-	"net/url"
-	"strconv"
-)
+import "github.com/google/go-querystring/query"
 
 type TeamsS struct {
 	Teams []TeamS `json:"teams,omitempty"`
@@ -17,11 +14,11 @@ type TeamsMethod struct {
 func (t *TeamsMethod) List(opt *ListOptions) (*TeamsS, error) {
 	rel := "teams"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	teams := new(TeamsS)

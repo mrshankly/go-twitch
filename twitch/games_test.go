@@ -7,11 +7,11 @@ import (
 
 func TestGamesTop(t *testing.T) {
 	tc := NewClient(&http.Client{})
-
+	fal := false
 	opt := &ListOptions{
 		Limit:  1,
 		Offset: 0,
-		Hls:    false,
+		Hls:    &fal,
 	}
 
 	_, err := tc.Games.Top(opt)

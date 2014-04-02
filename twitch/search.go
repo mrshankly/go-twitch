@@ -3,7 +3,8 @@ package twitch
 import (
 	"fmt"
 	"net/url"
-	"strconv"
+
+	"github.com/google/go-querystring/query"
 )
 
 type SGamesS struct {
@@ -37,11 +38,11 @@ type SearchMethod struct {
 func (s *SearchMethod) Streams(q string, opt *ListOptions) (*StreamsS, error) {
 	rel := "search/streams?q=" + url.QueryEscape(q)
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "&" + p.Encode()
+		rel += "&" + v.Encode()
 	}
 
 	search := new(StreamsS)
@@ -52,8 +53,11 @@ func (s *SearchMethod) Streams(q string, opt *ListOptions) (*StreamsS, error) {
 func (s *SearchMethod) Games(q string, opt *ListOptions) (*SGamesS, error) {
 	rel := fmt.Sprintf("search/games?q=%s&type=suggest", url.QueryEscape(q))
 	if opt != nil {
-		p := url.Values{"live": []string{strconv.FormatBool(opt.Live)}}
-		rel += "&" + p.Encode()
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
+		}
+		rel += "&" + v.Encode()
 	}
 
 	search := new(SGamesS)

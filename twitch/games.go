@@ -1,9 +1,6 @@
 package twitch
 
-import (
-	"net/url"
-	"strconv"
-)
+import "github.com/google/go-querystring/query"
 
 type TopsS struct {
 	Links LinksS `json:"_links,omitempty"`
@@ -34,12 +31,11 @@ type GamesMethod struct {
 func (g *GamesMethod) Top(opt *ListOptions) (*TopsS, error) {
 	rel := "games/top"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
-			"hls":    []string{strconv.FormatBool(opt.Hls)},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	games := new(TopsS)

@@ -115,14 +115,13 @@ type PreviewS struct {
 }
 
 type ListOptions struct {
-	Game       string
-	Channel    string
-	Limit      int
-	Offset     int
-	Embeddable bool
-	Hls        bool
-	ClientId   string
-	Direction  string
-	Live       bool
-	Period     string
+	Game       string `url:"game,omitempty"`
+	Channel    string `url:"channel,omitempty"`
+	Direction  string `url:"direction,omitempty"`
+	Period     string `url:"period,omitempty"`
+	Limit      int    `url:"limit,omitempty"`
+	Offset     int    `url:"offset,omitempty"`
+	Embeddable *bool  `url:"embeddable,omitempty"`
+	Hls        *bool  `url:"hls,omitempty"`
+	Live       *bool  `url:"live,omitempty"`
 }

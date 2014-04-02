@@ -1,9 +1,6 @@
 package twitch
 
-import (
-	"net/url"
-	"strconv"
-)
+import "github.com/google/go-querystring/query"
 
 type VideosMethod struct {
 	client *Client
@@ -20,13 +17,11 @@ func (v *VideosMethod) Id(id string) (*VideoS, error) {
 func (v *VideosMethod) Top(opt *ListOptions) (*VideosS, error) {
 	rel := "videos/top"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
-			"game":   []string{opt.Game},
-			"period": []string{opt.Period},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	videos := new(VideosS)

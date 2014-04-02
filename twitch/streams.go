@@ -3,10 +3,7 @@
 
 package twitch
 
-import (
-	"net/url"
-	"strconv"
-)
+import "github.com/google/go-querystring/query"
 
 // used with GET /streams/:channel/
 type SChannelS struct {
@@ -43,7 +40,7 @@ type StreamsMethod struct {
 	client *Client
 }
 
-// Returns a stream object if online.
+// Returns a stream object if live.
 func (s *StreamsMethod) Channel(name string) (*SChannelS, error) {
 	rel := "streams/" + name
 
@@ -55,17 +52,13 @@ func (s *StreamsMethod) Channel(name string) (*SChannelS, error) {
 // Returns a list of stream objects according to optional parameters.
 func (s *StreamsMethod) List(opt *ListOptions) (*StreamsS, error) {
 	rel := "streams"
+
 	if opt != nil {
-		p := url.Values{
-			"game":       []string{opt.Game},
-			"channel":    []string{opt.Channel},
-			"limit":      []string{strconv.Itoa(opt.Limit)},
-			"offset":     []string{strconv.Itoa(opt.Offset)},
-			"embeddable": []string{strconv.FormatBool(opt.Embeddable)},
-			"hls":        []string{strconv.FormatBool(opt.Hls)},
-			"client_id":  []string{opt.ClientId},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	streams := new(StreamsS)
@@ -77,12 +70,11 @@ func (s *StreamsMethod) List(opt *ListOptions) (*StreamsS, error) {
 func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 	rel := "streams/featured"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
-			"hls":    []string{strconv.FormatBool(opt.Hls)},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	featured := new(FeaturedS)
@@ -94,8 +86,11 @@ func (s *StreamsMethod) Featured(opt *ListOptions) (*FeaturedS, error) {
 func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 	rel := "streams/summary"
 	if opt != nil {
-		p := url.Values{"game": []string{opt.Game}}
-		rel += "?" + p.Encode()
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
+		}
+		rel += "?" + v.Encode()
 	}
 
 	summary := new(SummaryS)
@@ -104,15 +99,14 @@ func (s *StreamsMethod) Summary(opt *ListOptions) (*SummaryS, error) {
 }
 
 // Returns a list of stream objects that the authenticated user is following.
-func (s *StreamsMethod) Followed(opt *ListOptions) (*FollowedS, error) {
+func (s *StreamsMethod) followed(opt *ListOptions) (*FollowedS, error) {
 	rel := "streams/followed"
 	if opt != nil {
-		p := url.Values{
-			"limit":  []string{strconv.Itoa(opt.Limit)},
-			"offset": []string{strconv.Itoa(opt.Offset)},
-			"hls":    []string{strconv.FormatBool(opt.Hls)},
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		rel += "?" + p.Encode()
+		rel += "?" + v.Encode()
 	}
 
 	followed := new(FollowedS)
