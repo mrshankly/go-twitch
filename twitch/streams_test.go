@@ -18,13 +18,16 @@ func TestStreamsChannel(t *testing.T) {
 func TestStreamsList(t *testing.T) {
 	tc := NewClient(&http.Client{})
 
+	emb := true
+	hls := false
+
 	opt := &ListOptions{
 		Game:       "DayZ",
 		Channel:    "LIRIK",
 		Limit:      1,
 		Offset:     1,
-		Embeddable: &Embeddable{true},
-		Hls:        &Hls{},
+		Embeddable: &emb,
+		Hls:        &hls,
 	}
 
 	_, err := tc.Streams.List(opt)

@@ -3,7 +3,8 @@ package twitch
 import (
 	"fmt"
 	"net/url"
-	"strconv"
+
+	"github.com/google/go-querystring/query"
 )
 
 type SGamesS struct {
@@ -37,16 +38,11 @@ type SearchMethod struct {
 func (s *SearchMethod) Streams(q string, opt *ListOptions) (*StreamsS, error) {
 	rel := "search/streams?q=" + url.QueryEscape(q)
 	if opt != nil {
-		p := url.Values{}
-		if opt.Limit > 0 {
-			p.Add("limit", strconv.Itoa(opt.Limit))
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		if opt.Offset > 0 {
-			p.Add("offset", strconv.Itoa(opt.Offset))
-		}
-		if len(p) > 0 {
-			rel += "&" + p.Encode()
-		}
+		rel += "&" + v.Encode()
 	}
 
 	search := new(StreamsS)
@@ -57,13 +53,11 @@ func (s *SearchMethod) Streams(q string, opt *ListOptions) (*StreamsS, error) {
 func (s *SearchMethod) Games(q string, opt *ListOptions) (*SGamesS, error) {
 	rel := fmt.Sprintf("search/games?q=%s&type=suggest", url.QueryEscape(q))
 	if opt != nil {
-		p := url.Values{}
-		if opt.Live != nil {
-			p.Add("live", strconv.FormatBool(opt.Live.Show))
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		if len(p) > 0 {
-			rel += "&" + p.Encode()
-		}
+		rel += "&" + v.Encode()
 	}
 
 	search := new(SGamesS)

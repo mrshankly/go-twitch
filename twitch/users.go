@@ -2,8 +2,7 @@ package twitch
 
 import (
 	"fmt"
-	"net/url"
-	"strconv"
+	"github.com/google/go-querystring/query"
 )
 
 type BlocksS struct {
@@ -58,16 +57,11 @@ func (u *UsersMethod) channel(user string) (*UserS, error) {
 func (u *UsersMethod) blocks(login string, opt *ListOptions) (*BlocksS, error) {
 	rel := "users/" + login + "/blocks"
 	if opt != nil {
-		p := url.Values{}
-		if opt.Limit > 0 {
-			p.Add("limit", strconv.Itoa(opt.Limit))
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		if opt.Offset > 0 {
-			p.Add("offset", strconv.Itoa(opt.Offset))
-		}
-		if len(p) > 0 {
-			rel += "?" + p.Encode()
-		}
+		rel += "?" + v.Encode()
 	}
 
 	blocks := new(BlocksS)
@@ -79,16 +73,11 @@ func (u *UsersMethod) blocks(login string, opt *ListOptions) (*BlocksS, error) {
 func (u *UsersMethod) Follows(user string, opt *ListOptions) (*UFollowsS, error) {
 	rel := "users/" + user + "/follows/channels"
 	if opt != nil {
-		p := url.Values{}
-		if opt.Limit > 0 {
-			p.Add("limit", strconv.Itoa(opt.Limit))
+		v, err := query.Values(opt)
+		if err != nil {
+			return nil, err
 		}
-		if opt.Offset > 0 {
-			p.Add("offset", strconv.Itoa(opt.Offset))
-		}
-		if len(p) > 0 {
-			rel += "?" + p.Encode()
-		}
+		rel += "?" + v.Encode()
 	}
 
 	follows := new(UFollowsS)
