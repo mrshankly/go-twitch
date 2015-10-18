@@ -1,5 +1,7 @@
 package twitch
 
+import "time"
+
 // Channel object
 type ChannelS struct {
 	Name                         string        `json:"name,omitempty"`
@@ -60,13 +62,14 @@ type StreamS struct {
 
 // User object
 type UserS struct {
-	Name        string `json:"name,omitempty"`
-	Logo        string `json:"logo,omitempty"`
-	ID          int    `json:"_id,omitempty"`
-	DisplayName string `json:"display_name,omitempty"`
-	Staff       bool   `json:"staff,omitempty"`
-	CreatedAt   string `json:"created_at,omitempty"`
-	UpdatedAt   string `json:"updated_at,omitempty"`
+	Name        string    `json:"name,omitempty"`
+	Logo        string    `json:"logo,omitempty"`
+	ID          int       `json:"_id,omitempty"`
+	DisplayName string    `json:"display_name,omitempty"`
+	Type        string    `json:"type,omitempty"`
+	Bio         string    `json:"bio,omitempty"`
+	CreatedAt   time.Time `json:"created_at,omitempty"`
+	UpdatedAt   time.Time `json:"updated_at,omitempty"`
 }
 
 // Video object

@@ -5,6 +5,13 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
+type UAuthedS struct {
+	UserS
+	Email         string           `json:"email,omitempty"`
+	Partnered     bool           `json:"partnered,omitempty"`
+	Notifications UNotificationS `json:"notifications,omitempty"`
+}
+
 type BlocksS struct {
 	Blocks []BlockS `json:"blocks,omitempty"`
 	Links  LinksS   `json:"_links,omitempty"`
@@ -30,9 +37,15 @@ type UTargetS struct {
 	CreatedAt string   `json:"created_at,omitempty"`
 }
 
+type UNotificationS struct {
+	Push  bool `json:"push,omitempty"`
+	Email bool `json:"email,omitempty"`
+}
+
 type UsersMethod struct {
 	client *Client
 }
+
 
 // User returns a user object.
 func (u *UsersMethod) User(user string) (*UserS, error) {
@@ -43,13 +56,11 @@ func (u *UsersMethod) User(user string) (*UserS, error) {
 	return usr, err
 }
 
-func (u *UsersMethod) channel(user string) (*UserS, error) {
-	rel := "user" // get authenticated user
-	if user != "" {
-		rel = "users/" + user
-	}
+// User returns a user object.
+func (u *UsersMethod) Authenticated() (*UAuthedS, error) {
+	rel := "user"
 
-	usr := new(UserS)
+	usr := new(UAuthedS)
 	_, err := u.client.Get(rel, usr)
 	return usr, err
 }
