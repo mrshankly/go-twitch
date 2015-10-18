@@ -7,7 +7,7 @@ import (
 
 type UAuthedS struct {
 	UserS
-	Email         string           `json:"email,omitempty"`
+	Email         string         `json:"email,omitempty"`
 	Partnered     bool           `json:"partnered,omitempty"`
 	Notifications UNotificationS `json:"notifications,omitempty"`
 }
@@ -45,7 +45,6 @@ type UNotificationS struct {
 type UsersMethod struct {
 	client *Client
 }
-
 
 // User returns a user object.
 func (u *UsersMethod) User(user string) (*UserS, error) {
