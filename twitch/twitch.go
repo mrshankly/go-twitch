@@ -32,7 +32,7 @@ type Client struct {
 func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(rootURL)
 
-	clientId := os.Getenv("GO-TWITCH_CLIENTID")
+	clientId := os.Getenv("GO_TWITCH_CLIENTID")
 	c := &Client{client: httpClient, BaseURL: baseURL, ClientId: clientId}
 	c.Channels = &ChannelsMethod{client: c}
 	c.Chat = &ChatMethod{client: c}
