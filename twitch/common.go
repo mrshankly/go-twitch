@@ -49,13 +49,14 @@ type TeamS struct {
 type StreamS struct {
 	Id          int      `json:"_id,omitempty"`
 	Game        string   `json:"game,omitempty"`
-	Name        string   `json:"name,omitempty"`
-	Preview     string   `json:"preview,omitempty"`
 	Viewers     int      `json:"viewers,omitempty"`
-	Broadcaster string   `json:"broadcaster,omitempty"`
-	Geo         string   `json:"geo,omitempty"`
+	VideoHeight int      `json:"video_height,omitempty"`
+	AverageFps  float32  `json:"average_fps,omitempty"`
+	Delay       int      `json:"delay,omitempty"`
+	CreatedAt   string   `json:"created_at,omitempty"`
+	IsPlaylist  bool     `json:"is_playlist,omitempty"`
+	Preview     PreviewS `json:"preview,omitempty"`
 	Channel     ChannelS `json:"channel,omitempty"`
-	Status      string   `json:"status,omitempty"`
 }
 
 // User object
