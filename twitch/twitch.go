@@ -35,6 +35,7 @@ type Client struct {
 	ClientID string
 
 	// Services used for talking to different parts of the Twitch API.
+	Chat    *ChatService
 	Ingests *IngestsService
 
 	common service
@@ -87,6 +88,7 @@ func NewClient(httpClient *http.Client) *Client {
 	}
 
 	c.common.client = c
+	c.Chat = (*ChatService)(&c.common)
 	c.Ingests = (*IngestsService)(&c.common)
 
 	return c
