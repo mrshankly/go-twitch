@@ -1,90 +1,172 @@
 package twitch
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
-	"errors"
+	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
-	"strconv"
 )
 
-const rootURL = "https://api.twitch.tv/kraken/"
+const (
+	libraryVersion = "2"
+	rootURL        = "https://api.twitch.tv/kraken/"
+	userAgent      = "go-twitch/" + libraryVersion
+	mediaType      = "application/vnd.twitchtv.v5+json"
+)
 
+// A Client manages communication with the Twitch API.
 type Client struct {
-	client   *http.Client
-	BaseURL  *url.URL
-	ClientId string
+	client *http.Client
 
-	// Twitch api methods
-	Channels *ChannelsMethod
-	Chat     *ChatMethod
-	Games    *GamesMethod
-	Ingests  *IngestsMethod
-	Search   *SearchMethod
-	Streams  *StreamsMethod
-	Teams    *TeamsMethod
-	Users    *UsersMethod
-	Videos   *VideosMethod
+	// Base URL for API requests.
+	BaseURL *url.URL
+
+	// User agent used when cummunicating with the Twitch API.
+	UserAgent string
+
+	// Twitch client ID.
+	ClientID string
+
+	common service
 }
 
-// Returns a new twitch client used to communicate with the API.
+type service struct {
+	client *Client
+}
+
+// Returns a new Twitch API client.
+//
+// If a nil httpClient is provided, http.DefaultClient will be used. To use API
+// methods which require authentication, either set the Twitch client ID with
+// SetClientID or provide an http.Client that will perform the authentication
+// for you (such as that provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
+
 	baseURL, _ := url.Parse(rootURL)
 
-	clientId := os.Getenv("GO-TWITCH_CLIENTID")
-	c := &Client{client: httpClient, BaseURL: baseURL, ClientId: clientId}
-	c.Channels = &ChannelsMethod{client: c}
-	c.Chat = &ChatMethod{client: c}
-	c.Games = &GamesMethod{client: c}
-	c.Ingests = &IngestsMethod{client: c}
-	c.Search = &SearchMethod{client: c}
-	c.Streams = &StreamsMethod{client: c}
-	c.Teams = &TeamsMethod{client: c}
-	c.Users = &UsersMethod{client: c}
-	c.Videos = &VideosMethod{client: c}
+	c := &Client{
+		client:    httpClient,
+		BaseURL:   baseURL,
+		UserAgent: userAgent,
+		ClientID:  "",
+	}
+
+	c.common.client = c
 
 	return c
 }
 
-// Issues an API get request and returns the API response. The response body is
-// decoded and stored in the value pointed by r.
-func (c *Client) Get(path string, r interface{}) (*http.Response, error) {
-	rel, err := url.Parse(path)
+// Sets the Twitch client ID that will be used by this client.
+func (c *Client) SetClientID(id string) error {
+	c.ClientID = id
+	return nil
+}
 
+// Creates an API request.
+//
+// The path string is resolved relative to the BaseURL of the client.
+//
+// If not nil, the value pointed to by body is JSON encoded and included as the
+// request body.
+func (c *Client) NewRequest(method, path string, body interface{}) (*http.Request, error) {
+	rel, err := url.Parse(path)
 	if err != nil {
 		return nil, err
 	}
-
 	u := c.BaseURL.ResolveReference(rel)
 
-	req, err := http.NewRequest("GET", u.String(), nil)
+	var buf io.ReadWriter
+	if body != nil {
+		buf = new(bytes.Buffer)
+		err = json.NewEncoder(buf).Encode(body)
+		if err != nil {
+			return nil, err
+		}
+	}
 
+	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
-
 	}
-	req.Header.Add("Accept", "application/vnd.twitchtv.v2+json")
 
-	if len(c.ClientId) != 0 {
-		req.Header.Add("Client-ID", c.ClientId)
-
+	if c.ClientID != "" {
+		req.Header.Set("Client-ID", c.ClientID)
 	}
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
+	req.Header.Set("Accept", mediaType)
+	req.Header.Set("User-Agent", c.UserAgent)
+
+	return req, nil
+}
+
+// Do sends an API request and returns the API response.
+//
+// The API response is JSON decoded and stored in the value pointed to by r, or
+// returned as an error if an API error has occurred.
+//
+// The provided ctx must not be nil. If it is canceled or times out, ctx.Err()
+// will be returned.
+func (c *Client) Do(ctx context.Context, req *http.Request, r interface{}) (*http.Response, error) {
+	req = req.WithContext(ctx)
+
 	resp, err := c.client.Do(req)
-
 	if err != nil {
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+		}
 		return nil, err
 	}
-
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNotModified {
-		return nil, errors.New("api error, response code: " + strconv.Itoa(resp.StatusCode))
-	}
-
 	defer resp.Body.Close()
+
+	if err = checkResponse(resp); err != nil {
+		return resp, err
+	}
 
 	if r != nil {
 		err = json.NewDecoder(resp.Body).Decode(r)
+		if err == io.EOF {
+			err = nil
+		}
+	}
+	return resp, err
+}
+
+// An ErrorResponse reports an error caused by an API request.
+type ErrorResponse struct {
+	// HTTP response that cause this error.
+	Response *http.Response
+
+	// Error message.
+	Message string `json:"message,omitempty"`
+}
+
+func checkResponse(r *http.Response) error {
+	if 200 <= r.StatusCode && r.StatusCode <= 299 {
+		return nil
 	}
 
-	return resp, err
+	errorResponse := &ErrorResponse{Response: r}
+	data, err := ioutil.ReadAll(r.Body)
+	if err == nil && len(data) > 0 {
+		err = json.Unmarshal(data, errorResponse)
+	}
+	return errorResponse
+}
+
+func (e *ErrorResponse) Error() string {
+	r := e.Response
+
+	return fmt.Sprintf("%v %v: %d %v",
+		r.Request.Method, r.Request.URL, r.StatusCode, e.Message)
 }
