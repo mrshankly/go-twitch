@@ -39,6 +39,7 @@ type Client struct {
 	Chat    *ChatService
 	Games   *GamesService
 	Ingests *IngestsService
+	Teams   *TeamsService
 
 	common service
 }
@@ -107,6 +108,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Chat = (*ChatService)(&c.common)
 	c.Games = (*GamesService)(&c.common)
 	c.Ingests = (*IngestsService)(&c.common)
+	c.Teams = (*TeamsService)(&c.common)
 
 	return c
 }
