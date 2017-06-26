@@ -46,6 +46,19 @@ type service struct {
 	client *Client
 }
 
+// ListOptions specifies the optional parameters to various List methods that
+// support pagination.
+type ListOptions struct {
+	// Tells the server where to start fetching the next set of results.
+	Cursor string `url:"cursor,omitempty"`
+
+	// Maximum number of results per page.
+	Limit int `url:"limit,omitempty"`
+
+	// Offset of the set of results.
+	Offset int `url:"offset,omitempty"`
+}
+
 // Adds the parameters in opt as URL query parameters to s. opt must be a struct
 // whose fields may contain "url" tags.
 func addOptions(s string, opt interface{}) (string, error) {
