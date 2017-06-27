@@ -9,7 +9,7 @@ import (
 
 const teamsPath = "teams"
 
-// GamesService handles communication with the teams related methods of the
+// TeamsService handles communication with the teams related methods of the
 // Twitch API.
 //
 // Twitch API docs: https://dev.twitch.tv/docs/v5/reference/teams/
