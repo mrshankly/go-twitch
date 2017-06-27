@@ -22,27 +22,29 @@ type Preview struct {
 }
 
 type Game struct {
-	Channels int `json:"channels,omitempty"`
-	Viewers  int `json:"viewers,omitempty"`
-	Game     *struct {
-		ID          int      `json:"_id,omitempty"`
-		Box         *Preview `json:"box,omitempty"`
-		GiantbombID int      `json:"giantbomb_id,omitempty"`
-		Logo        *Preview `json:"logo,omitempty"`
-		Name        string   `json:"name,omitempty"`
-		Popularity  int      `json:"popularity,omitempty"`
-	} `json:"game,omitempty"`
+	ID          int64    `json:"_id,omitempty"`
+	Box         *Preview `json:"box,omitempty"`
+	GiantbombID int      `json:"giantbomb_id,omitempty"`
+	Logo        *Preview `json:"logo,omitempty"`
+	Name        string   `json:"name,omitempty"`
+	Popularity  int      `json:"popularity,omitempty"`
+}
+
+type TopGame struct {
+	Channels int   `json:"channels,omitempty"`
+	Viewers  int   `json:"viewers,omitempty"`
+	Game     *Game `json:"game,omitempty"`
 }
 
 type topGamesRoot struct {
-	Top []*Game `json:"top,omitempty"`
+	Top []*TopGame `json:"top,omitempty"`
 }
 
 // Returns the games sorted by number of current viewers on Twitch, most popular
 // first.
 //
 // Twitch API docs: https://dev.twitch.tv/docs/v5/reference/games/#get-top-games
-func (s *GamesService) Top(ctx context.Context, opt *ListOptions) ([]*Game, *http.Response, error) {
+func (s *GamesService) Top(ctx context.Context, opt *ListOptions) ([]*TopGame, *http.Response, error) {
 	path := fmt.Sprintf("%v/top", gamesPath)
 	path, err := addOptions(path, opt)
 	if err != nil {
