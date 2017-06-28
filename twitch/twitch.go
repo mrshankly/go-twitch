@@ -34,6 +34,9 @@ type Client struct {
 	// Twitch client ID.
 	ClientID string
 
+	// Token that authenticates the requests made to the Twitch API.
+	AccessToken string
+
 	// Services used for talking to different parts of the Twitch API.
 	Bits    *BitsService
 	Chat    *ChatService
@@ -87,10 +90,9 @@ func addOptions(s string, opt interface{}) (string, error) {
 // Returns a new Twitch API client.
 //
 // If a nil httpClient is provided, http.DefaultClient will be used. To use API
-// methods which require authentication, either set the Twitch client ID with
-// SetClientID or provide an http.Client that will perform the authentication
-// for you (such as that provided by the golang.org/x/oauth2 library).
-func NewClient(httpClient *http.Client) *Client {
+// methods which require authentication, set the AccessToken field of the
+// returned client.
+func NewClient(httpClient *http.Client, clientID string) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
@@ -101,7 +103,7 @@ func NewClient(httpClient *http.Client) *Client {
 		client:    httpClient,
 		BaseURL:   baseURL,
 		UserAgent: userAgent,
-		ClientID:  "",
+		ClientID:  clientID,
 	}
 
 	c.common.client = c
@@ -113,12 +115,6 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Teams = (*TeamsService)(&c.common)
 
 	return c
-}
-
-// Sets the Twitch client ID that will be used by this client.
-func (c *Client) SetClientID(id string) error {
-	c.ClientID = id
-	return nil
 }
 
 // Creates an API request.
@@ -150,6 +146,9 @@ func (c *Client) NewRequest(method, path string, body interface{}) (*http.Reques
 
 	if c.ClientID != "" {
 		req.Header.Set("Client-ID", c.ClientID)
+	}
+	if c.AccessToken != "" {
+		req.Header.Set("Authorization", "OAuth "+c.AccessToken)
 	}
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
