@@ -46,7 +46,7 @@ type Emoticon struct {
 	} `json:"images,omitempty"`
 }
 
-type EmoticonsListOptions struct {
+type ChatOptions struct {
 	EmoteSets []int `url:"emotesets,omitempty,comma"`
 }
 
@@ -81,7 +81,7 @@ func (s *ChatService) Badges(ctx context.Context, channel string) (*Badges, *htt
 // specified sets.
 //
 // Twitch API docs: https://dev.twitch.tv/docs/v5/reference/chat/#get-chat-emoticons-by-set
-func (s *ChatService) EmoticonsBySet(ctx context.Context, opt *EmoticonsListOptions) (map[int][]*EmoticonSimple, *http.Response, error) {
+func (s *ChatService) EmoticonsBySet(ctx context.Context, opt *ChatOptions) (map[int][]*EmoticonSimple, *http.Response, error) {
 	path := fmt.Sprintf("%v/emoticon_images", chatPath)
 	path, err := addOptions(path, opt)
 	if err != nil {
