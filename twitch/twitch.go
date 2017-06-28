@@ -40,6 +40,7 @@ type Client struct {
 	// Services used for talking to different parts of the Twitch API.
 	Bits    *BitsService
 	Chat    *ChatService
+	Clips   *ClipsService
 	Games   *GamesService
 	Ingests *IngestsService
 	Search  *SearchService
@@ -109,6 +110,7 @@ func NewClient(httpClient *http.Client, clientID string) *Client {
 	c.common.client = c
 	c.Bits = (*BitsService)(&c.common)
 	c.Chat = (*ChatService)(&c.common)
+	c.Clips = (*ClipsService)(&c.common)
 	c.Games = (*GamesService)(&c.common)
 	c.Ingests = (*IngestsService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
