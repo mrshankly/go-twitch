@@ -36,7 +36,7 @@ func (s *IngestsService) List(ctx context.Context) ([]*Ingest, *http.Response, e
 	}
 
 	root := new(ingestsRoot)
-	resp, err := s.client.Do(ctx, req, &root)
+	resp, err := s.client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}

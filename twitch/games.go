@@ -57,7 +57,7 @@ func (s *GamesService) Top(ctx context.Context, opt *ListOptions) ([]*TopGame, *
 	}
 
 	root := new(topGamesRoot)
-	resp, err := s.client.Do(ctx, req, &root)
+	resp, err := s.client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}

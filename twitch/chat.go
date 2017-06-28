@@ -69,7 +69,7 @@ func (s *ChatService) Badges(ctx context.Context, channel string) (*Badges, *htt
 	}
 
 	badges := new(Badges)
-	resp, err := s.client.Do(ctx, req, &badges)
+	resp, err := s.client.Do(ctx, req, badges)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -94,7 +94,7 @@ func (s *ChatService) EmoticonsBySet(ctx context.Context, opt *ChatOptions) (map
 	}
 
 	root := new(emoticonsBySetRoot)
-	resp, err := s.client.Do(ctx, req, &root)
+	resp, err := s.client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -113,7 +113,7 @@ func (s *ChatService) Emoticons(ctx context.Context) ([]*Emoticon, *http.Respons
 	}
 
 	root := new(emoticonsRoot)
-	resp, err := s.client.Do(ctx, req, &root)
+	resp, err := s.client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}

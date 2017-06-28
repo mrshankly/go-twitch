@@ -58,7 +58,7 @@ func (s *BitsService) Cheermotes(ctx context.Context, opt *CheermotesListOptions
 	}
 
 	root := new(cheermotesRoot)
-	resp, err := s.client.Do(ctx, req, &root)
+	resp, err := s.client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}

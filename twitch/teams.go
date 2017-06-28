@@ -68,7 +68,7 @@ func (s *TeamsService) List(ctx context.Context, opt *ListOptions) ([]*Team, *ht
 	}
 
 	root := new(listTeamsRoot)
-	resp, err := s.client.Do(ctx, req, &root)
+	resp, err := s.client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -87,7 +87,7 @@ func (s *TeamsService) Team(ctx context.Context, name string) (*Team, *http.Resp
 	}
 
 	team := new(Team)
-	resp, err := s.client.Do(ctx, req, &team)
+	resp, err := s.client.Do(ctx, req, team)
 	if err != nil {
 		return nil, resp, err
 	}
